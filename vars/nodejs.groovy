@@ -21,7 +21,7 @@ def call() {
         stage('Lint checks') {
             steps {
                 script {
-                    nodejs.lintCheck()
+                    lintCheck()
                 }
             }
 
