@@ -1,7 +1,7 @@
 def lintCheck() {
 sh '''
      echo Starting lint checks for ${COMPONENT}
-     pylint *.py
+     # pylint *.py
      echo lint checks completed for ${COMPONENT}
  '''
 
