@@ -11,13 +11,16 @@ sh '''
 
 def sonarCheck() {
     sh '''
-          sonar-scanner -Dsonar.host.url=http://172.31.1.192:9000/ -Dsonar.sources=. -Dsonar.projectKey=${COMPONENT} -Dsonar.login=admin -Dsonar.password=Password
+          sonar-scanner -Dsonar.host.url=http://172.31.1.192:9000/ -Dsonar.sources=. -Dsonar.projectKey=${COMPONENT} -Dsonar.login=${Sonar_usr} -Dsonar.password=${Sonar_psw}
     '''
 }
 
 def call() {
    pipeline {
      agent any
+     environment {
+        Sonar = credentials('Sonar')
+     }
       stages {
         stage('Installing the node js dependencies') {
             steps {
