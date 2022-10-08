@@ -19,7 +19,16 @@ def call() {
             }
 
         }
+     stage('sonar check') {
+            steps {
+                script {
+                    env.ARGS = -Dsonar.sources=target/
+                    common.sonarCheck()
+                }
+            }
+        }   
+             
     }
-}
+    }
 }
 // call is the default function whicch will be called
