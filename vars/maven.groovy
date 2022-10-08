@@ -22,11 +22,21 @@ def call() {
          stage('sonar check') {
             steps {
                 script {
+                    mvn clean compile
                     env.ARGS = -Dsonar.sources=target/
                     common.sonarCheck()
                 }
             }
-        }   
+        }  
+        stage('test cases') {
+            parallel {
+                stage('unit Tests') {
+                    steps {
+                        sh "Unit test cases completed"
+                    }
+                }
+            }
+        } 
     }
  
   }
