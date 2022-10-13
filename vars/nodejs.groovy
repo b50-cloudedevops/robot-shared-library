@@ -12,17 +12,17 @@ sh '''
 def call() {
    pipeline {
      agent any
-     environment {
+      environment {
         SONAR = credentials('Sonar')
         NEXUS = credentials('NEXUS')
-     }
-      stages {
-        stage('Installing the node js dependencies') {
+       }
+      stages{
+         stage ('Installing the node js dependencies') {
             steps {
                 sh "npm install"
             }
         }
-        stage('Lint checks') {
+        stage ('Lint checks') {
             steps {
                 script {
                     lintCheck()
@@ -30,7 +30,7 @@ def call() {
             }
 
         }
-        stage('sonar check') {
+        stage ('sonar check') {
             steps {
                 script {
                     env.ARGS = "-Dsonar.sources=."
@@ -38,14 +38,14 @@ def call() {
                 }
             }
         }
-        stage('test cases') {
+        stage ('test cases') {
             parallel {
                 stage('unit Tests') {
                     steps {
                         sh "echo Unit test cases completed"
                     }
                 }
-                stage('Integration Tests') {
+                stage ('Integration Tests') {
                     steps {
                         sh "echo Integration test cases completed"
                     }
@@ -56,6 +56,7 @@ def call() {
                     }
                 }
             }
+        }
             stage('Prepare artifacts') {
                 when {
                     expression { env.TAG_NAME != null }
@@ -80,5 +81,4 @@ def call() {
         } 
         }
     }
-}
 // call is the default function whicch will be called

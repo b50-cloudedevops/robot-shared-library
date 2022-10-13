@@ -22,7 +22,7 @@ def call() {
          stage('sonar check') {
             steps {
                 script {
-                    sh 'mvn clean compile'
+                    sh "mvn clean compile"
                     env.ARGS = "-Dsonar.sources=target/"
                     common.sonarCheck()
                 }
