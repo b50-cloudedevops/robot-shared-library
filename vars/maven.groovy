@@ -22,8 +22,8 @@ def call() {
          stage('sonar check') {
             steps {
                 script {
-                    mvn clean compile
-                    env.ARGS = -Dsonar.sources=target/
+                    sh 'mvn clean compile'
+                    env.ARGS = "-Dsonar.sources=target/"
                     common.sonarCheck()
                 }
             }
@@ -32,7 +32,17 @@ def call() {
             parallel {
                 stage('unit Tests') {
                     steps {
-                        sh "Unit test cases completed"
+                        sh "echo Unit test cases completed"
+                    }
+                }
+                stage('Integration Tests') {
+                    steps {
+                        sh "echo Integration test cases completed"
+                    }
+                }
+                stage('Functional Tests') {
+                    steps {
+                        sh " echo Functional test cases completed"
                     }
                 }
             }
