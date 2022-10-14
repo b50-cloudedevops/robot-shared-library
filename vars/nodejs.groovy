@@ -52,8 +52,10 @@ def call() {
                         sh " echo Functional test cases completed"
                     }
                 }
-              stage('Prepare artifacts') {
-                when {
+            }
+        }
+        stage('Prepare artifacts') {
+             when {
                     expression { env.TAG_NAME != null }
                 }
                 steps {
@@ -75,8 +77,5 @@ def call() {
             }
         } 
  
-        }
-
-       }
- }
+    }
 }
