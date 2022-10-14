@@ -21,17 +21,17 @@ def call() {
                 }
             }
 
-        }
-        stage('sonar check') {
+         }
+         stage('sonar check') {
             steps {
                 script {
                     sh "mvn clean package"
-                    env.ARGS = "-Dsonar.sources=target/"
+                    env.ARGS='-Dsonar.sources=target/'
                     common.sonarCheck()
                 }
             }
-        }  
-        stage('Test cases') {
+         }  
+         stage('Test cases') {
             parallel {
                 stage('Unit Tests') {
                  steps {
