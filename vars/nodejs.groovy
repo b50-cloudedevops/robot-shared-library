@@ -6,13 +6,6 @@ sh '''
      echo starting lint checks
      echo lint checks completed
  '''
-
-}
-
-def sonarCheck() {
-    sh '''
-         sonar-scanner -Dsonar.host.url=http://172.31.1.192:9000/  -Dsonar.sources=. -Dsonar.projectKey=${COMPONENT} -Dsonar.login=${SONAR_USR} -Dsonar.password=${SONAR_PSW}
-    '''
 }
 def call() {
  pipeline {
@@ -36,7 +29,8 @@ def call() {
         stage('Sonar check') {
             steps {
                 script {
-                    sonarCheck()
+                    env.ARGS = "-Dsonar.sources=."
+                    common.sonarCheck()
                 }
             }
         }
