@@ -52,7 +52,10 @@ def call() {
                         sh " echo Functional test cases completed"
                     }
                 }
-                stage('Prepare artifacts') {
+            }
+        }
+
+        stage('Prepare artifacts') {
                  when {
                     expression { env.TAG_NAME != null }
                  }
@@ -62,8 +65,8 @@ def call() {
                         zip ${COMPONENT}.zip node_modules server.js
                     '''
                   }
-                }
-                stage('Upload artifacts') {
+           }
+        stage('Upload artifacts') {
                  when {
                     expression { env.TAG_NAME != null }
                  }
@@ -75,7 +78,6 @@ def call() {
             }
          
         }
-    }
-    }
+    
     }
 }
