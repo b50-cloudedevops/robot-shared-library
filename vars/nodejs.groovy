@@ -12,7 +12,7 @@ def call() {
      agent any 
  environment {
     SONAR=credentials('Sonar')
-    NEXUS=credentails('Nexus')
+    NEXUS=credentials('Nexus')
  }
        stages {
          stage('Installing the node js dependencies') {
