@@ -26,7 +26,7 @@ def call() {
             steps {
                 script {
                     sh "mvn clean compile"
-                    env.ARGS = -Dsonar.sources=target/
+                    env.ARGS = "-Dsonar.sources=target/"
                     common.sonarCheck()
                 }
             }
