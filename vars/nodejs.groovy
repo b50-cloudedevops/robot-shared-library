@@ -53,23 +53,23 @@ def call() {
                     }
                 }
             }
-        }
+        }    
         stage('Prepare artifacts') {
-             when {
+                 when {
                     expression { env.TAG_NAME != null }
-                }
-                steps {
+                 }
+                 steps {
                     sh '''
                         npm install
                         zip ${COMPONENT}.zip node_modules server.js
                     '''
-                }
-            }
+                  }
+               }
         stage('Upload artifacts') {
-                when {
+                 when {
                     expression { env.TAG_NAME != null }
-                }
-                steps {
+                 }
+                 steps {
                     sh '''
                        curl -v -u ${NEXUS_USR}:${NEXUS_PSW} --upload-file pom.xml http://172.31.3.52:8081/repository/${COMPONENT}/${COMPONENT}.zip
                     '''
