@@ -11,12 +11,8 @@ sh '''
 
 def call() {
  pipeline {
-     agent any
-       environment {
-        SONAR = credentials('Sonar')
-        NEXUS = credentials('NEXUS')
-        }
-       stages{
+     agent any 
+       stages {
          stage('Installing the node js dependencies') {
             steps {
                 sh "npm install"
