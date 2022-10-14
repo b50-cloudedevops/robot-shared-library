@@ -10,7 +10,7 @@ sh '''
 }
 
 def call() {
-   pipeline {
+ pipeline {
      agent any
       environment {
         SONAR = credentials('Sonar')
@@ -80,5 +80,5 @@ def call() {
         //    }
         //} 
    }
+ 
 }
-// call is the default function whicch will be called
