@@ -22,8 +22,7 @@ def call() {
             }
 
         }
-         
-          tage('sonar check') {
+        stage('sonar check') {
             steps {
                 script {
                     sh "mvn clean compile"
