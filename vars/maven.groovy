@@ -12,6 +12,7 @@ def call() {
      agent any
    environment {
     SONAR=credentials('Sonar')
+    NEXUS=credentials('Nexus')
  }
       stages {
         stage('Lint checks') {
