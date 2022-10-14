@@ -29,10 +29,10 @@ def call() {
                 }
             }
         } 
-        stage('test cases') {
+        stage('Test cases') {
             parallel {
-                stage('unit Tests') {
-                    steps {
+                stage('Unit Tests') {
+                 steps {
                         sh "echo Unit test cases completed"
                     }
                 }
@@ -47,8 +47,30 @@ def call() {
                     }
                 }
             }
-        }   
+        }
+        stage('Prepare artifacts') {
+                 //when {
+                 //   expression { env.TAG_NAME!= null }
+                // }
+                 steps {
+                    sh '''
+                        npm install
+                        zip ${COMPONENT}.zip node_modules server.js
+                    '''
+                  }
+           }
+        stage('Upload artifacts') {
+                // when {
+                //    expression { env.TAG_NAME!= null }
+                // }
+                 steps {
+                    sh '''
+                       curl -f -v -u ${NEXUS_USR}:${NEXUS_PSW} --upload-file ${COMPONENT}.zip http://172.31.3.52:8081/repository/${COMPONENT}/${COMPONENT}.zip
+                    '''
+                }
+            }
+         
+        }
+    
     }
 }
-}
-// call is the default function whicch will be called
