@@ -30,6 +30,13 @@ def call() {
                 }
             }
         }
+        stage('Sonar check') {
+            steps {
+                script {
+                    sonarCheck()
+                }
+            }
+        }
        }
  }
 }
