@@ -51,8 +51,31 @@ def call() {
                         sh " echo Functional test cases completed"
                     }
                 }
+              stage('Prepare artifacts') {
+                when {
+                    expression { env.TAG_NAME != null }
+                }
+                steps {
+                    sh '''
+                        npm install
+                        zip ${COMPONENT}.zip node_modules server.js
+                    '''
+                }
             }
+            stage('Upload artifacts') {
+                when {
+                    expression { env.TAG_NAME != null }
+                }
+                steps {
+                    sh '''
+                       curl -v -u ${NEXUS_USR}:${NEXUS_PSW} --upload-file pom.xml http://172.31.3.52:8081/repository/${COMPONENT}/${COMPONENT}.zip
+                    '''
+                }
+            }
+        } 
+ 
         }
+
        }
  }
 }
