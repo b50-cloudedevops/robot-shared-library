@@ -17,12 +17,12 @@ def call() {
         NEXUS = credentials('NEXUS')
        }
       stages{
-         stage ('Installing the node js dependencies') {
+         stage('Installing the node js dependencies') {
             steps {
                 sh "npm install"
             }
         }
-        stage ('Lint checks') {
+        stage('Lint checks') {
             steps {
                 script {
                     lintCheck()
