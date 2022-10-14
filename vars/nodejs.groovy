@@ -14,8 +14,8 @@ def call() {
     SONAR=credentials('Sonar')
     NEXUS=credentials('Nexus')
  }
-       stages {
-         stage('Installing the node js dependencies') {
+    stages {
+        stage('Installing the node js dependencies') {
             steps {
                 sh "npm install"
             }
@@ -65,7 +65,7 @@ def call() {
                     '''
                 }
             }
-            stage('Upload artifacts') {
+        stage('Upload artifacts') {
                 when {
                     expression { env.TAG_NAME != null }
                 }
