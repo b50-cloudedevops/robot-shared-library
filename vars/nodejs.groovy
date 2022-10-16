@@ -56,7 +56,7 @@ def call() {
         }
         stage('Prepare artifacts') {
                  when {
-                   expression { env.TAG_NAME!= null }
+                   expression { env.TAG_NAME != null }
                  }
                  steps {
                     sh '''
@@ -67,7 +67,7 @@ def call() {
            }
         stage('Upload artifacts') {
                  when {
-                    expression { env.TAG_NAME!= null }
+                    expression { env.TAG_NAME != null }
                   }
                  steps {
                     sh '''
