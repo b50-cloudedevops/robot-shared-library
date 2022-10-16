@@ -61,7 +61,7 @@ def call() {
                  steps {
                     sh '''
                         npm install
-                        zip ${COMPONENT}.zip node_modules server.js
+                        zip ${COMPONENT}-${TAG_NAME}.zip node_modules server.js
                     '''
                   }
            }
@@ -71,7 +71,7 @@ def call() {
                   }
                  steps {
                     sh '''
-                       curl -f -v -u ${NEXUS_USR}:${NEXUS_PSW} --upload-file ${COMPONENT}-${TAG_NAME}.zip http://172.31.3.52:8081/repository/${COMPONENT}/${COMPONENT}-${TAG_NAME}.zip
+                       curl -v -u ${NEXUS_USR}:${NEXUS_PSW} --upload-file ${COMPONENT}-${TAG_NAME}.zip http://172.31.3.52:8081/repository/${COMPONENT}/${COMPONENT}-${TAG_NAME}.zip
                     '''
                 }
             }
