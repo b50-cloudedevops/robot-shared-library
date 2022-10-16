@@ -64,6 +64,7 @@ def call() {
                         print UPLOAD_STATUS
                   }
            }
+        }
         stage('Prepare artifacts') {
                  when {
                    expression { env.TAG_NAME != null }
