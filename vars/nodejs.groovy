@@ -55,9 +55,9 @@ def call() {
             }
         }
         stage('Prepare artifacts') {
-                 //when {
-                 //   expression { env.TAG_NAME!= null }
-                // }
+                 when {
+                   expression { env.TAG_NAME!= null }
+                 }
                  steps {
                     sh '''
                         npm install
@@ -66,9 +66,9 @@ def call() {
                   }
            }
         stage('Upload artifacts') {
-                // when {
-                //    expression { env.TAG_NAME!= null }
-                // }
+                 when {
+                    expression { env.TAG_NAME!= null }
+                  }
                  steps {
                     sh '''
                        curl -f -v -u ${NEXUS_USR}:${NEXUS_PSW} --upload-file ${COMPONENT}.zip http://172.31.3.52:8081/repository/${COMPONENT}/${COMPONENT}.zip
