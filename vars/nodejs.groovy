@@ -1,95 +1,82 @@
-def lintCheck() {
-sh '''
-     # We want devs to handle the lint checks failure
-     # npm i jslint
-     # node_modules/jslint/bin/jslint.js server.js || true
-     echo starting lint checks
-     echo lint checks completed
- '''
-}
 def call() {
- pipeline {
-     agent any 
- environment {
-    SONAR=credentials('Sonar')
-    NEXUS=credentials('Nexus')
- }
-    stages {
-        stage('Installing the node js dependencies') {
-            steps {
-                sh "npm install"
-            }
+    node {
+        git branch: 'main', url: "https://github.com/b50-clouddevops/${COMPONENT}.git"
+        env.APPTYPE="nodejs"
+        common.sonarCheck()
+        common.lintCheck()
+        env.ARGS="-Dsonar.sources=."
+        common.testCases()
+        if (env.TAG_NAME != null) {
+            common.artifact()
         }
-        stage('Lint checks') {
-            steps {
-                script {
-                    lintCheck()
-                }
-            }
-        }
-        stage('Sonar check') {
-            steps {
-                script {
-                    env.ARGS = "-Dsonar.sources=."
-                    common.sonarCheck()
-                }
-            }
-        }
-        stage('Test cases') {
-            parallel {
-                stage('Unit Tests') {
-                 steps {
-                        sh "echo Unit test cases completed"
-                    }
-                }
-                stage('Integration Tests') {
-                    steps {
-                        sh "echo Integration test cases completed"
-                    }
-                }
-                stage('Functional Tests') {
-                    steps {
-                        sh " echo Functional test cases completed"
-                    }
-                }
-            }
-        }
-        stage('Check the release') {
-                 when {
-                   expression { env.TAG_NAME != null }
-                 }
-                 steps {
-                    script {
-                        env.UPLOAD_STATUS = sh(returnStdout: true, script: 'curl -L -s http://172.31.3.52:8081/service/rest/repository/browse/${COMPONENT} | grep ${COMPONENT}-${TAG_NAME}.zip || true')
-                        print UPLOAD_STATUS
-                  }
-           }
-        }
-        stage('Prepare artifacts') {
-                 when {
-                   expression { env.TAG_NAME != null }
-                   expression { env.UPLOAD_STATUS == "" }
-                 }
-                 steps {
-                    sh '''
-                        npm install
-                        zip ${COMPONENT}-${TAG_NAME}.zip node_modules server.js
-                    '''
-                  }
-           }
-        stage('Upload artifacts') {
-                 when {
-                    expression { env.TAG_NAME != null }
-                    expression { env.UPLOAD_STATUS == "" }
-                  }
-                 steps {
-                    sh '''
-                       curl -v -u ${NEXUS_USR}:${NEXUS_PSW} --upload-file ${COMPONENT}-${TAG_NAME}.zip http://172.31.3.52:8081/repository/${COMPONENT}/${COMPONENT}-${TAG_NAME}.zip
-                    '''
-                }
-            }
-         
-        }
-    
     }
 }
+
+// def call() {
+//     pipeline {
+//         agent any 
+//         environment {
+//             SONAR      = credentials('SONAR')
+//             NEXUS      = credentials('NEXUS')
+//         }
+ 
+//         stages {
+//             stage('Downloading the dependencies') {
+//                 steps {
+//                     sh "npm install"
+//                 }
+//             }
+
+
+//             stage('Sonar Check') {
+//                 steps {
+//                     script { 
+
+//                     }
+//                 }
+//             }
+
+
+
+//             stage('Check the release') {
+//                 when {
+//                     expression { env.TAG_NAME != null }   // Only runs when you run this against the TAG
+//                 }
+//                 steps {
+//                     script {
+//                         env.UPLOAD_STATUS=sh(returnStdout: true, script: 'curl -L -s http://172.31.0.75:8081/service/rest/repository/browse/${COMPONENT} | grep ${COMPONENT}-${TAG_NAME}.zip || true')
+//                         print UPLOAD_STATUS
+//                     }
+//                 }
+//             }
+
+//             stage('Prepare Artifacts') {
+//                 when {
+//                     expression { env.TAG_NAME != null }   // Only runs when you run this against the TAG
+//                     expression { env.UPLOAD_STATUS == "" }
+//                 }
+//                 steps {
+//                     sh ''' 
+//                         npm install 
+//                         zip ${COMPONENT}-${TAG_NAME}.zip node_modules server.js
+
+//                     ''' 
+//                 }
+//             }
+
+//             stage('Upload Artifacts') {
+//                 when {
+//                     expression { env.TAG_NAME != null }   // Only runs when you run this against the TAG
+//                     expression { env.UPLOAD_STATUS == "" }
+//                 }
+//                 steps {
+//                     sh ''' 
+//                         curl -f -v -u ${NEXUS_USR}:${NEXUS_PSW} --upload-file ${COMPONENT}-${TAG_NAME}.zip http://172.31.0.75:8081/repository/${COMPONENT}/${COMPONENT}-${TAG_NAME}.zip
+//                     '''
+//                 }
+//             }
+//         }    // end of statges 
+//     }
+// }
+
+// call is the default function which will be called when you call the fileName 

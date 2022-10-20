@@ -1,17 +1,17 @@
 def call() {
     node {
         git branch: 'main', url: "https://github.com/b50-clouddevops/${COMPONENT}.git"
-        env.APPTYPE="maven"
+        env.APPTYPE="python"
         common.sonarCheck()
         common.lintCheck()
-        sh 'mvn clean compile'
-        env.ARGS="-Dsonar.java.binaries=target/"
+        env.ARGS="-Dsonar.sources=."
         common.testCases()
         if (env.TAG_NAME != null) {
             common.artifact()
         }
     }
 }
+
 
 
 // def call() {
@@ -32,8 +32,7 @@ def call() {
 //             stage('Sonar Check') {
 //                 steps {
 //                     script { 
-//                         sh "mvn clean compile"
-//                         env.ARGS="-Dsonar.java.binaries=target/"
+//                         env.ARGS="-Dsonar.sources=."
 //                         common.sonarCheck()
 //                     }
 //                 }
@@ -61,4 +60,5 @@ def call() {
 //     }
 // }
 
-// call is the default function which will be called when you call the fileName 
+// Reference for pylint 
+// https://pypi.org/project/pylint/
