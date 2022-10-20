@@ -111,7 +111,7 @@ def artifact() {
             }
        } 
       stage('Upload Artifacts') {
-         withCredentials([usernamePassword(credentialsId: 'NEXUS', usernameVariable: 'NEXUS_USR', passwordVariable: 'NEXUS_PSW')]) {
+         withCredentials([usernamePassword(credentialsId: 'Nexus', usernameVariable: 'NEXUS_USR', passwordVariable: 'NEXUS_PSW')]) {
             sh ''' 
              curl -f -v -u ${NEXUS_USR}:${NEXUS_PSW} --upload-file ${COMPONENT}-${TAG_NAME}.zip http://172.31.3.52:8081/repository/${COMPONENT}/${COMPONENT}-${TAG_NAME}.zip
                   
